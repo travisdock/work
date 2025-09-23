@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Project One
+  description: First test project
+  start_date: 2025-09-23
+  due_date: 2025-10-23
+  status: 1
+  priority_number: 3
+  priority_tags: '["urgent"]'
+  next_action: Start first task
+
+two:
+  name: Project Two
+  description: Second test project
+  start_date: 2025-09-24
+  due_date: 2025-11-23
+  status: 0
+  priority_number: 2
+  priority_tags: '["important"]'
+  next_action: Plan project

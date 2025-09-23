@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: Task One
+  description: First test task
+  project: one
+  parent_task:
+  start_date: 2025-09-23
+  due_date: 2025-09-23
+  status: 0
+  priority_number: 3
+  priority_tags: '["urgent"]'
+  effort_estimate: 2 hours
+  next_action: Start working
+  position: 1
+
+two:
+  title: Task Two
+  description: Second test task
+  project: one
+  parent_task:
+  start_date: 2025-09-23
+  due_date: 2025-09-23
+  status: 0
+  priority_number: 2
+  priority_tags: '["important"]'
+  effort_estimate: 1 day
+  next_action: Research first
+  position: 2
