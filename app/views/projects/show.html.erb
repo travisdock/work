@@ -52,7 +52,7 @@
   </div>
 
   <div class="tasks-section">
-    <h2>Tasks</h2>
+    <h2>Tasks <%= pluralize(@tasks.count, "task") if @tasks.any? %></h2>
 
     <% if @tasks.any? %>
       <div class="tasks-list">
@@ -72,13 +72,17 @@
     <%= link_to "All Projects", projects_path, class: "btn btn-text" %>
     <% unless @project.completed? %>
       <%= link_to "Archive Project", archive_project_path(@project),
-                  method: :patch,
                   class: "btn btn-secondary",
-                  data: { confirm: "Are you sure you want to archive this project?" } %>
+                  data: {
+                    turbo_method: :patch,
+                    turbo_confirm: "Are you sure you want to archive this project?"
+                  } %>
     <% end %>
     <%= link_to "Delete Project", project_path(@project),
-                method: :delete,
                 class: "btn btn-text text-error",
-                data: { confirm: "Are you sure? This will delete all tasks too." } %>
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure? This will delete all tasks too."
+                } %>
   </div>
 </div>
