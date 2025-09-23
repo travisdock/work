@@ -1,0 +1,19 @@
+<div class="notebook-page">
+  <div class="page-header">
+    <h1 class="page-title">All Tasks</h1>
+    <%= link_to "All Projects", projects_path, class: "btn btn-secondary" %>
+  </div>
+
+  <% if @tasks.any? %>
+    <div class="tasks-list">
+      <% @tasks.each do |task| %>
+        <%= render 'tasks/task_item', task: task, show_project: true %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <p class="empty-state-text">No active tasks. All caught up!</p>
+      <%= link_to "View Projects", projects_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
