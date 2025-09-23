@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_project, except: [:index, :show, :complete]
+  before_action :set_project, except: [:index, :complete]
   before_action :set_task, only: [:show, :edit, :update, :destroy, :complete]
 
   def index
@@ -12,8 +12,8 @@ class TasksController < ApplicationController
 
   def new
     @task = @project.tasks.build
-    @potential_parents = @project.tasks.where.not(id: @task.id) if @task.persisted?
-    @potential_dependencies = @project.tasks.where.not(id: @task.id) if @task.persisted?
+    @potential_parents = @project.tasks.all
+    @potential_dependencies = @project.tasks.all
   end
 
   def create
@@ -65,7 +65,7 @@ class TasksController < ApplicationController
   end
 
   def set_task
-    if params[:project_id]
+    if params[:project_id] && @project
       @task = @project.tasks.find(params[:id])
     else
       @task = Task.find(params[:id])
