@@ -1,0 +1,88 @@
+<div class="notebook-page">
+  <div class="page-header">
+    <div class="project-header">
+      <div class="priority-mark priority-<%= @project.priority_number %>">
+        <%= "!" * @project.priority_number %>
+      </div>
+
+      <div class="project-info">
+        <h1 class="project-title"><%= @project.name %></h1>
+        <span class="project-status status-<%= @project.status %>">
+          <%= @project.status.humanize %>
+        </span>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-secondary" %>
+      <%= link_to "New Task", new_project_task_path(@project), class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <% if @project.description.present? %>
+    <div class="project-description">
+      <p><%= simple_format(@project.description) %></p>
+    </div>
+  <% end %>
+
+  <% if @project.next_action.present? %>
+    <div class="next-action">
+      <strong>Next Action:</strong> <%= @project.next_action %>
+    </div>
+  <% end %>
+
+  <div class="project-meta">
+    <% if @project.start_date %>
+      <span class="start-date">Started: <%= @project.start_date.strftime("%b %d, %Y") %></span>
+    <% end %>
+
+    <% if @project.due_date %>
+      <span class="due-date <%= 'overdue' if @project.due_date < Date.current %>">
+        Due: <%= @project.due_date.strftime("%b %d, %Y") %>
+      </span>
+    <% end %>
+
+    <% if @project.priority_tags.any? %>
+      <div class="priority-tags">
+        <% @project.priority_tags.each do |tag| %>
+          <span class="tag tag-<%= tag %>"><%= tag %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tasks-section">
+    <h2>Tasks <%= pluralize(@tasks.count, "task") if @tasks.any? %></h2>
+
+    <% if @tasks.any? %>
+      <div class="tasks-list">
+        <% @tasks.each do |task| %>
+          <%= render 'tasks/task_item', task: task, show_project: false %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <p class="empty-state-text">No tasks yet. Create your first task to get started.</p>
+        <%= link_to "Create Task", new_project_task_path(@project), class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="project-actions">
+    <%= link_to "All Projects", projects_path, class: "btn btn-text" %>
+    <% unless @project.completed? %>
+      <%= link_to "Archive Project", archive_project_path(@project),
+                  class: "btn btn-secondary",
+                  data: {
+                    turbo_method: :patch,
+                    turbo_confirm: "Are you sure you want to archive this project?"
+                  } %>
+    <% end %>
+    <%= link_to "Delete Project", project_path(@project),
+                class: "btn btn-text text-error",
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure? This will delete all tasks too."
+                } %>
+  </div>
+</div>

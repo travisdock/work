@@ -1,0 +1,78 @@
+<div class="task-item task-<%= task.status %>" data-task-id="<%= task.id %>">
+  <div class="task-checkbox-container">
+    <% if task.done? %>
+      <span class="task-checkbox checked">✓</span>
+    <% else %>
+      <%= link_to complete_task_path(task), class: "task-checkbox", data: { turbo_method: :patch, turbo_frame: '_self' } do %>
+        <span class="checkbox-empty"></span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="task-content">
+    <div class="task-header">
+      <span class="task-title">
+        <%= link_to task.title, [task.project, task] %>
+      </span>
+
+      <% if task.blocked? %>
+        <span class="task-status status-blocked">🔒 Blocked</span>
+      <% elsif task.priority_number >= 4 %>
+        <span class="task-priority high-priority">🔥</span>
+      <% end %>
+
+      <% if show_project %>
+        <span class="task-project">
+          <%= link_to task.project.name, task.project, class: "project-link" %>
+        </span>
+      <% end %>
+    </div>
+
+    <% if task.description.present? %>
+      <div class="task-description">
+        <%= truncate(task.description, length: 100) %>
+      </div>
+    <% end %>
+
+    <div class="task-meta">
+      <% if task.effort_estimate.present? %>
+        <span class="effort-estimate">~<%= task.effort_estimate %></span>
+      <% end %>
+
+      <% if task.due_date %>
+        <span class="due-date <%= 'overdue' if task.due_date < Date.current %>">
+          <%= task.due_date.strftime("%b %d") %>
+        </span>
+      <% end %>
+
+      <% if task.predecessors.any? %>
+        <span class="dependency-count">
+          Depends on <%= pluralize(task.predecessors.count, 'task') %>
+        </span>
+      <% end %>
+    </div>
+
+    <% if task.priority_tags.any? %>
+      <div class="task-tags">
+        <% task.priority_tags.each do |tag| %>
+          <span class="tag tag-<%= tag %>"><%= tag %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="task-actions">
+    <%= link_to "Edit", edit_project_task_path(task.project, task), class: "btn btn-text btn-small" %>
+  </div>
+
+  <!-- Show subtasks if any -->
+  <% if task.subtasks.any? %>
+    <div class="subtasks">
+      <% task.subtasks.each do |subtask| %>
+        <div class="subtask-indent">
+          <%= render 'tasks/task_item', task: subtask, show_project: show_project %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

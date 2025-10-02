@@ -1,0 +1,89 @@
+<div class="notebook-page">
+  <div class="page-header">
+    <h1 class="page-title">New Task</h1>
+    <span class="project-context">in <%= @project.name %></span>
+  </div>
+
+  <%= form_with model: [@project, @task], local: true, class: "task-form" do |form| %>
+    <% if @task.errors.any? %>
+      <div class="error-summary">
+        <h3><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h3>
+        <ul>
+          <% @task.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :title, class: "form-label" %>
+      <%= form.text_field :title, class: "input-box", placeholder: "Enter task title" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_area :description, class: "textarea-field", rows: 3, placeholder: "Describe the task..." %>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :parent_task_id, "Parent Task", class: "form-label" %>
+        <%= form.select :parent_task_id,
+                        options_from_collection_for_select(@potential_parents || [], :id, :title, @task.parent_task_id),
+                        { prompt: "No parent (root task)" },
+                        { class: "input-box" } %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :priority_number, "Priority (1-5)", class: "form-label" %>
+        <%= form.select :priority_number,
+                        options_for_select((1..5).map {|i| [i, i]}, 3),
+                        {},
+                        {class: "input-box"} %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :start_date, class: "form-label" %>
+        <%= form.date_field :start_date, class: "input-box" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :due_date, class: "form-label" %>
+        <%= form.date_field :due_date, class: "input-box" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :effort_estimate, class: "form-label" %>
+      <%= form.text_field :effort_estimate, class: "input-box", placeholder: "e.g., 2 hours, 1 day" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :priority_tags, "Priority Tags", class: "form-label" %>
+      <div class="checkbox-group">
+        <% ['urgent', 'important', 'quick_win', 'deep_work'].each do |tag| %>
+          <label class="checkbox-label">
+            <%= check_box_tag "task[priority_tags][]", tag,
+                              @task.priority_tags.include?(tag),
+                              class: "checkbox-input" %>
+            <span class="checkbox-custom"></span>
+            <%= tag.humanize %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :next_action, class: "form-label" %>
+      <%= form.text_field :next_action, class: "input-box", placeholder: "What's the immediate next step?" %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Create Task", class: "btn btn-primary" %>
+      <%= link_to "Cancel", @project, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
