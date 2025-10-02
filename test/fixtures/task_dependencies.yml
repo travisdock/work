@@ -2,10 +2,10 @@
 
 one:
   predecessor_task: one
-  successor_task: one
+  successor_task: two
   dependency_type: MyString
 
 two:
   predecessor_task: two
-  successor_task: two
+  successor_task: one
   dependency_type: MyString
