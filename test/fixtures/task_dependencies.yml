@@ -3,9 +3,9 @@
 one:
   predecessor_task: one
   successor_task: two
-  dependency_type: MyString
+  dependency_type: finish_to_start
 
 two:
   predecessor_task: two
-  successor_task: one
-  dependency_type: MyString
+  successor_task: two
+  dependency_type: finish_to_start
