@@ -44,7 +44,7 @@ class Task < ApplicationRecord
   def check_if_blocked
     if is_blocked? && !blocked?
       update_column(:status, Task.statuses[:blocked])
-    elsif blocked? && !is_blocked? && status_previously_was != "blocked"
+    elsif blocked? && !is_blocked? && status_previously_was != :blocked
       update_column(:status, Task.statuses[:todo])
     end
   end
