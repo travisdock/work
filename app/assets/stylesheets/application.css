@@ -8,3 +8,8 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* Set Patrick Hand as the default font for the entire application */
+body {
+  font-family: 'Patrick Hand', cursive;
+}
