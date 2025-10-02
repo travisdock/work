@@ -3,7 +3,7 @@
     <% if task.done? %>
       <span class="task-checkbox checked">✓</span>
     <% else %>
-      <%= link_to complete_task_path(task), method: :patch, remote: true, class: "task-checkbox" do %>
+      <%= link_to complete_task_path(task), class: "task-checkbox", data: { turbo_method: :patch, turbo_frame: '_self' } do %>
         <span class="checkbox-empty"></span>
       <% end %>
     <% end %>
