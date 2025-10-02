@@ -6,17 +6,17 @@ Rails.application.routes.draw do
 
   # Projects with nested tasks
   resources :projects do
-    resources :tasks, except: [:index]
+    resources :tasks, except: [ :index ]
     member do
       patch :archive
     end
   end
 
   # Task dependencies (AJAX only)
-  resources :task_dependencies, only: [:create, :destroy]
+  resources :task_dependencies, only: [ :create, :destroy ]
 
   # Tasks can also be accessed directly for certain actions
-  resources :tasks, only: [:index, :show] do
+  resources :tasks, only: [ :index, :show ] do
     member do
       patch :complete
     end

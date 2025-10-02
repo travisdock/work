@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
-  before_action :set_project, except: [:index, :complete]
-  before_action :set_task, only: [:show, :edit, :update, :destroy, :complete]
+  before_action :set_project, except: [ :index, :complete ]
+  before_action :set_task, only: [ :show, :edit, :update, :destroy, :complete ]
 
   def index
     @tasks = Task.includes(:project, :predecessors, :successors).incomplete.by_position
@@ -20,7 +20,7 @@ class TasksController < ApplicationController
     @task = @project.tasks.build(task_params)
 
     if @task.save
-      redirect_to [@project, @task], notice: 'Task was successfully created.'
+      redirect_to [ @project, @task ], notice: "Task was successfully created."
     else
       @potential_parents = @project.tasks.where.not(id: @task.id)
       @potential_dependencies = @project.tasks.where.not(id: @task.id)
@@ -35,7 +35,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to [@project, @task], notice: 'Task was successfully updated.'
+      redirect_to [ @project, @task ], notice: "Task was successfully updated."
     else
       @potential_parents = @project.tasks.where.not(id: @task.id)
       @potential_dependencies = @project.tasks.where.not(id: @task.id)
@@ -45,16 +45,16 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to @project, notice: 'Task was successfully deleted.'
+    redirect_to @project, notice: "Task was successfully deleted."
   end
 
   def complete
     @task.update(status: :done)
 
     if request.xhr?
-      render json: { status: 'completed', task_id: @task.id }
+      render json: { status: "completed", task_id: @task.id }
     else
-      redirect_back(fallback_location: @task.project, notice: 'Task completed!')
+      redirect_back(fallback_location: @task.project, notice: "Task completed!")
     end
   end
 

@@ -15,7 +15,7 @@ project1 = Project.create!(
   description: "Complete overhaul of company website with modern design and improved user experience",
   status: :active,
   priority_number: 4,
-  priority_tags: ["urgent", "important"],
+  priority_tags: [ "urgent", "important" ],
   start_date: 1.week.ago,
   due_date: 2.months.from_now,
   next_action: "Finalize wireframes with design team"
@@ -26,7 +26,7 @@ project2 = Project.create!(
   description: "Plan and execute marketing campaign for Q4 product launch",
   status: :planned,
   priority_number: 3,
-  priority_tags: ["important"],
+  priority_tags: [ "important" ],
   start_date: 2.weeks.from_now,
   due_date: 3.months.from_now,
   next_action: "Schedule kickoff meeting with marketing team"
@@ -37,7 +37,7 @@ project3 = Project.create!(
   description: "Build internal productivity tools for team collaboration",
   status: :active,
   priority_number: 2,
-  priority_tags: ["deep_work"],
+  priority_tags: [ "deep_work" ],
   start_date: 3.days.ago,
   due_date: 6.weeks.from_now,
   next_action: "Research existing tools and define requirements"
@@ -49,7 +49,7 @@ wireframes = project1.tasks.create!(
   description: "Design wireframes for all main pages including homepage, about, and contact",
   status: :in_progress,
   priority_number: 4,
-  priority_tags: ["urgent"],
+  priority_tags: [ "urgent" ],
   effort_estimate: "1 week",
   position: 1
 )
@@ -68,7 +68,7 @@ development = project1.tasks.create!(
   description: "Implement the new design using modern web technologies",
   status: :todo,
   priority_number: 4,
-  priority_tags: ["important"],
+  priority_tags: [ "important" ],
   effort_estimate: "3 weeks",
   position: 3
 )

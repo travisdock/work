@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :archive]
+  before_action :set_project, only: [ :show, :edit, :update, :destroy, :archive ]
 
   def index
     @projects = Project.includes(:tasks).by_priority
@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
-      redirect_to @project, notice: 'Project was successfully created.'
+      redirect_to @project, notice: "Project was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -28,7 +28,7 @@ class ProjectsController < ApplicationController
 
   def update
     if @project.update(project_params)
-      redirect_to @project, notice: 'Project was successfully updated.'
+      redirect_to @project, notice: "Project was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,12 +36,12 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project.destroy
-    redirect_to projects_url, notice: 'Project was successfully deleted.'
+    redirect_to projects_url, notice: "Project was successfully deleted."
   end
 
   def archive
     @project.update(status: :completed)
-    redirect_to @project, notice: 'Project was archived.'
+    redirect_to @project, notice: "Project was archived."
   end
 
   private
