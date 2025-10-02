@@ -30,7 +30,7 @@ class TaskDependency < ApplicationRecord
 
   def creates_circular_dependency?
     visited = Set.new
-    queue = [predecessor_task_id]
+    queue = [ predecessor_task_id ]
 
     while queue.any?
       current = queue.shift

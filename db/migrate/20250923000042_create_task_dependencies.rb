@@ -8,6 +8,6 @@ class CreateTaskDependencies < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :task_dependencies, [:predecessor_task_id, :successor_task_id], unique: true, name: 'index_task_deps_on_pred_and_succ'
+    add_index :task_dependencies, [ :predecessor_task_id, :successor_task_id ], unique: true, name: 'index_task_deps_on_pred_and_succ'
   end
 end

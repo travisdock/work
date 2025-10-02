@@ -39,10 +39,10 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "should serialize priority_tags as array" do
-    @project.priority_tags = ["urgent", "important"]
+    @project.priority_tags = [ "urgent", "important" ]
     @project.save!
     @project.reload
-    assert_equal ["urgent", "important"], @project.priority_tags
+    assert_equal [ "urgent", "important" ], @project.priority_tags
   end
 
   test "should initialize empty priority_tags array" do
@@ -98,8 +98,8 @@ class ProjectTest < ActiveSupport::TestCase
     medium_priority = Project.create!(name: "Test Medium Priority", priority_number: 3)
 
     # Only check our test projects
-    test_projects = Project.where(name: ["Test Low Priority", "Test High Priority", "Test Medium Priority"])
+    test_projects = Project.where(name: [ "Test Low Priority", "Test High Priority", "Test Medium Priority" ])
     ordered = test_projects.by_priority.to_a
-    assert_equal [high_priority, medium_priority, low_priority], ordered
+    assert_equal [ high_priority, medium_priority, low_priority ], ordered
   end
 end

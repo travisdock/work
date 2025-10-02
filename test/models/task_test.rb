@@ -45,10 +45,10 @@ class TaskTest < ActiveSupport::TestCase
   end
 
   test "should serialize priority_tags as array" do
-    @task.priority_tags = ["urgent", "quick_win"]
+    @task.priority_tags = [ "urgent", "quick_win" ]
     @task.save!
     @task.reload
-    assert_equal ["urgent", "quick_win"], @task.priority_tags
+    assert_equal [ "urgent", "quick_win" ], @task.priority_tags
   end
 
   test "should have subtasks association" do
