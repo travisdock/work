@@ -31,30 +31,10 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 # Create necessary directories (these will be overridden by volume mount)
-RUN mkdir -p tmp/pids log storage
+#RUN mkdir -p tmp/pids log storage
 
-# Create a setup script for database initialization
-COPY <<EOF /usr/local/bin/setup.sh
-#!/bin/bash
-set -e
-
-# Only run setup if the database doesn't exist
-if [ ! -f db/development.sqlite3 ]; then
-  echo "Setting up database..."
-  bundle exec rails db:create db:migrate db:seed
-else
-  echo "Database already exists, running any pending migrations..."
-  bundle exec rails db:migrate
-fi
-
-exec "\$@"
-EOF
-
-RUN chmod +x /usr/local/bin/setup.sh
-
-# Expose port 3000
 EXPOSE 3000
 
 # Use entrypoint to set up database then start server
-ENTRYPOINT ["/usr/local/bin/setup.sh"]
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+ENTRYPOINT ["./bin/setup"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
