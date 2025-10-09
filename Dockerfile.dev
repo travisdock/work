@@ -1,40 +1,23 @@
-# syntax=docker/dockerfile:1
-# Development Dockerfile for local development
+FROM ruby:3.4.4-slim
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-ARG RUBY_VERSION=3.4.4
-FROM docker.io/library/ruby:$RUBY_VERSION-slim
+ENV APP_HOME="/app_home"
+ENV BUNDLE_PATH="${APP_HOME}/vendor/bundle"
+ENV PATH="${APP_HOME}/bin:${BUNDLE_PATH}/bin:${PATH}"
 
-# Rails app lives here
-WORKDIR /rails
+WORKDIR $APP_HOME
 
-# Install packages needed for development
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    build-essential \
-    curl \
-    git \
-    libjemalloc2 \
-    libvips \
-    libyaml-dev \
-    pkg-config \
-    sqlite3 \
-    vim \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+ARG UID=1000
+ARG GID=1000
 
-# Set development environment variables
-ENV RAILS_ENV="development" \
-    BUNDLE_PATH="/usr/local/bundle"
-
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install
-
-# Create necessary directories (these will be overridden by volume mount)
-#RUN mkdir -p tmp/pids log storage
+RUN bash -c "set -o pipefail && apt-get update \
+  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev libyaml-dev vim\
+  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
+  && apt-get clean \
+  && groupadd -g \"${GID}\" ruby \
+  && useradd --create-home --no-log-init -u \"${UID}\" -g \"${GID}\" ruby \
+  && chown ruby:ruby -R /app_home"
 
 EXPOSE 3000
 
-# Use entrypoint to set up database then start server
-ENTRYPOINT ["./bin/setup"]
+ENTRYPOINT ["./bin/docker-entrypoint"]
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
