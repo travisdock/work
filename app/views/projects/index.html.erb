@@ -4,7 +4,7 @@
     <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
   </div>
 
-  <div class="projects-list">
+  <div class="projects-grid">
     <% if @projects.any? %>
       <% @projects.each do |project| %>
         <div class="project-card">
