@@ -4,21 +4,42 @@
     <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
   </div>
 
-  <div class="projects-list">
-    <% if @projects.any? %>
-      <% @projects.each do |project| %>
-        <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
-          <%= link_to project.name, project_path(project), class: "project-name" %>
-          <span class="project-status status-<%= project.status %>">
-            <%= project.status.humanize %>
-          </span>
+  <% if @active_projects.any? || @archived_projects.any? %>
+    <% if @active_projects.any? %>
+      <div class="projects-section">
+        <h2 class="section-title">Active Projects</h2>
+        <div class="projects-list">
+          <% @active_projects.each do |project| %>
+            <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
+              <%= link_to project.name, project_path(project), class: "project-name" %>
+              <span class="project-status status-<%= project.status %>">
+                <%= project.status.humanize %>
+              </span>
+            </div>
+          <% end %>
         </div>
-      <% end %>
-    <% else %>
-      <div class="empty-state">
-        <p class="empty-state-text">No projects yet. Create your first project to get started.</p>
-        <%= link_to "Create Project", new_project_path, class: "btn btn-primary" %>
       </div>
     <% end %>
-  </div>
+
+    <% if @archived_projects.any? %>
+      <div class="projects-section">
+        <h2 class="section-title">Archived Projects</h2>
+        <div class="projects-list">
+          <% @archived_projects.each do |project| %>
+            <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
+              <%= link_to project.name, project_path(project), class: "project-name" %>
+              <span class="project-status status-<%= project.status %>">
+                <%= project.status.humanize %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="empty-state">
+      <p class="empty-state-text">No projects yet. Create your first project to get started.</p>
+      <%= link_to "Create Project", new_project_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>
