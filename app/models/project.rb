@@ -20,7 +20,11 @@ class Project < ApplicationRecord
 
   # Scopes
   scope :active, -> { where(status: :active) }
+  scope :not_completed, -> { where.not(status: :completed) }
+  scope :completed, -> { where(status: :completed) }
+  scope :recently_archived, -> { completed.where("updated_at >= ?", 60.days.ago) }
   scope :by_priority, -> { order(priority_number: :desc) }
+  scope :by_recent_update, -> { order(updated_at: :desc) }
 
   # Callbacks
   before_validation :set_defaults

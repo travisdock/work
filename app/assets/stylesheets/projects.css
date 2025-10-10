@@ -122,3 +122,57 @@
   background-color: #f8d7da;
   color: #721c24;
 }
+
+/* Section Styling */
+.projects-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.section-title .count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  background-color: #e5e7eb;
+  color: #374151;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.section-title .toggle-icon {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: #6b7280;
+  transition: transform 0.2s;
+}
+
+.projects-list.hidden {
+  display: none;
+}
+
+/* Rotate icon when collapsed */
+.projects-section[data-controller="collapsible"] .section-title:hover {
+  opacity: 0.8;
+}
+
+.projects-section[data-controller="collapsible"] .section-title .toggle-icon {
+  transition: transform 0.2s;
+}
+
+/* When content is hidden, rotate icon */
+.projects-section[data-controller="collapsible"]:has(.projects-list.hidden) .toggle-icon {
+  transform: rotate(-90deg);
+}

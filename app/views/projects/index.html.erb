@@ -7,7 +7,10 @@
   <% if @active_projects.any? || @archived_projects.any? %>
     <% if @active_projects.any? %>
       <div class="projects-section">
-        <h2 class="section-title">Active Projects</h2>
+        <h2 class="section-title">
+          Active Projects
+          <span class="count"><%= @active_projects.count %></span>
+        </h2>
         <div class="projects-list">
           <% @active_projects.each do |project| %>
             <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
@@ -22,9 +25,13 @@
     <% end %>
 
     <% if @archived_projects.any? %>
-      <div class="projects-section">
-        <h2 class="section-title">Archived Projects</h2>
-        <div class="projects-list">
+      <div class="projects-section" id="archived-section" data-controller="collapsible" data-collapsible-key="archived-projects">
+        <h2 class="section-title" data-action="click->collapsible#toggle" style="cursor: pointer;">
+          Archived Projects
+          <span class="count"><%= @archived_projects.count %></span>
+          <span class="toggle-icon">▼</span>
+        </h2>
+        <div class="projects-list" data-collapsible-target="content">
           <% @archived_projects.each do |project| %>
             <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
               <%= link_to project.name, project_path(project), class: "project-name" %>

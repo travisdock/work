@@ -2,10 +2,8 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [ :show, :edit, :update, :destroy, :archive ]
 
   def index
-    @active_projects = Project.includes(:tasks).where.not(status: :completed).by_priority
-    @archived_projects = Project.where(status: :completed)
-                                .where("updated_at >= ?", 60.days.ago)
-                                .order(updated_at: :desc)
+    @active_projects = Project.includes(:tasks).not_completed.by_priority
+    @archived_projects = Project.recently_archived.by_recent_update
   end
 
   def show
