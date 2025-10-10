@@ -35,8 +35,8 @@
           <% @archived_projects.each do |project| %>
             <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
               <%= link_to project.name, project_path(project), class: "project-name" %>
-              <span class="project-status status-<%= project.status %>">
-                <%= project.status.humanize %>
+              <span class="project-completed-date">
+                Completed <%= project.completed_at.strftime("%b %d, %Y") %>
               </span>
             </div>
           <% end %>

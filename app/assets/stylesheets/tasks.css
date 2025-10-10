@@ -43,18 +43,6 @@
   border-left-color: #f97316;
 }
 
-.task-row.priority-6 {
-  border-left-color: #ef4444;
-}
-
-.task-row.priority-7 {
-  border-left-color: #dc2626;
-}
-
-.task-row.priority-8 {
-  border-left-color: #b91c1c;
-}
-
 /* Task status styling */
 .task-row.task-done {
   opacity: 0.6;
