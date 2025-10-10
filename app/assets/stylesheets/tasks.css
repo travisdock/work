@@ -1,0 +1,169 @@
+/* Tasks List Layout */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #e0e0e0;
+  background: white;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.task-row:hover {
+  background: #f9fafb;
+  border-left-color: #3b82f6;
+}
+
+/* Priority color coding */
+.task-row.priority-1 {
+  border-left-color: #93c5fd;
+}
+
+.task-row.priority-2 {
+  border-left-color: #60a5fa;
+}
+
+.task-row.priority-3 {
+  border-left-color: #3b82f6;
+}
+
+.task-row.priority-4 {
+  border-left-color: #fb923c;
+}
+
+.task-row.priority-5 {
+  border-left-color: #f97316;
+}
+
+.task-row.priority-6 {
+  border-left-color: #ef4444;
+}
+
+.task-row.priority-7 {
+  border-left-color: #dc2626;
+}
+
+.task-row.priority-8 {
+  border-left-color: #b91c1c;
+}
+
+/* Task status styling */
+.task-row.task-done {
+  opacity: 0.6;
+  border-left-color: #c0c0c0;
+}
+
+.task-row.task-done .task-name {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.task-row.task-blocked {
+  border-left-color: #64748b;
+  background: #f8fafc;
+}
+
+/* Task checkbox */
+.task-checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #999;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.task-checkbox:hover {
+  border-color: #3b82f6;
+  background: #f0f8ff;
+}
+
+.task-checkbox.checked {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.task-checkbox .checkmark {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.checkbox-empty {
+  width: 100%;
+  height: 100%;
+}
+
+.task-name {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.task-name:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.task-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.task-status.status-todo {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.task-status.status-in_progress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.task-status.status-done {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.task-status.status-blocked {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Subtask indentation */
+.subtask-indent {
+  margin-left: 2rem;
+  margin-top: 0.25rem;
+}
+
+.subtask-indent .task-row {
+  background: #fafafa;
+  font-size: 0.95rem;
+}
+
+.subtask-indent .task-row:hover {
+  background: #f3f4f6;
+}

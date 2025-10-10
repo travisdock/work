@@ -4,52 +4,14 @@
     <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
   </div>
 
-  <div class="projects-grid">
+  <div class="projects-list">
     <% if @projects.any? %>
       <% @projects.each do |project| %>
-        <div class="project-card">
-          <div class="priority-mark priority-<%= project.priority_number %>">
-            <%= "!" * project.priority_number %>
-          </div>
-
-          <div class="project-content">
-            <h3 class="project-title">
-              <%= link_to project.name, project_path(project) %>
-            </h3>
-
-            <p class="project-description">
-              <%= truncate(project.description, length: 120) if project.description.present? %>
-            </p>
-
-            <div class="project-meta">
-              <span class="project-status status-<%= project.status %>">
-                <%= project.status.humanize %>
-              </span>
-
-              <span class="task-count">
-                <%= pluralize(project.tasks.count, 'task') %>
-              </span>
-
-              <% if project.due_date %>
-                <span class="due-date <%= 'overdue' if project.due_date < Date.current %>">
-                  Due <%= project.due_date.strftime("%b %d") %>
-                </span>
-              <% end %>
-            </div>
-
-            <% if project.priority_tags.any? %>
-              <div class="priority-tags">
-                <% project.priority_tags.each do |tag| %>
-                  <span class="tag tag-<%= tag %>"><%= tag %></span>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="project-actions">
-            <%= link_to "View", project_path(project), class: "btn btn-text" %>
-            <%= link_to "Edit", edit_project_path(project), class: "btn btn-text" %>
-          </div>
+        <div class="project-row priority-<%= project.priority_number %> <%= project.priority_tags.map { |tag| "tag-#{tag}" }.join(' ') %>">
+          <%= link_to project.name, project_path(project), class: "project-name" %>
+          <span class="project-status status-<%= project.status %>">
+            <%= project.status.humanize %>
+          </span>
         </div>
       <% end %>
     <% else %>
