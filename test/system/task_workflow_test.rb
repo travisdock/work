@@ -76,11 +76,12 @@ class TaskWorkflowTest < ApplicationSystemTestCase
     # Visit the parent task detail page
     click_on "Parent Task"
 
-    # Should see subtasks listed
+    # Should see parent task description
+    assert_text "This has subtasks"
+
+    # Should see subtasks listed (titles are shown)
     assert_text "First Subtask"
     assert_text "Second Subtask"
-    assert_text "First child task"
-    assert_text "Second child task"
   end
 
   test "user can navigate through project workflow naturally" do
@@ -204,7 +205,7 @@ class TaskWorkflowTest < ApplicationSystemTestCase
     assert_current_path project_path(@project)
 
     # Project status should be updated
-    assert_equal "completed", @project.reload.status
+    assert @project.reload.completed?
   end
 
   test "user journey: create project, add tasks, complete workflow" do

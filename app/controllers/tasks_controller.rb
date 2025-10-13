@@ -49,12 +49,14 @@ class TasksController < ApplicationController
   end
 
   def complete
-    @task.update(status: :done)
+    new_status = @task.done? ? :todo : :done
+    @task.update(status: new_status)
 
     if request.xhr?
-      render json: { status: "completed", task_id: @task.id }
+      render json: { status: new_status, task_id: @task.id }
     else
-      redirect_back(fallback_location: @task.project, notice: "Task completed!")
+      message = new_status == "done" ? "Task completed!" : "Task marked incomplete."
+      redirect_back(fallback_location: @task.project, notice: message)
     end
   end
 

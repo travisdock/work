@@ -1,0 +1,173 @@
+/* Projects List Layout */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #e0e0e0;
+  background: white;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.project-row:hover {
+  background: #f9fafb;
+  border-left-color: #3b82f6;
+}
+
+/* Priority color coding */
+.project-row.priority-1 {
+  border-left-color: #93c5fd;
+}
+
+.project-row.priority-2 {
+  border-left-color: #60a5fa;
+}
+
+.project-row.priority-3 {
+  border-left-color: #3b82f6;
+}
+
+.project-row.priority-4 {
+  border-left-color: #fb923c;
+}
+
+.project-row.priority-5 {
+  border-left-color: #f97316;
+}
+
+/* Priority tag color overrides */
+.project-row.tag-urgent {
+  border-left-color: #dc2626;
+  background: #fef2f2;
+}
+
+.project-row.tag-urgent:hover {
+  background: #fee2e2;
+}
+
+.project-row.tag-important {
+  border-left-color: #f97316;
+  background: #fff7ed;
+}
+
+.project-row.tag-important:hover {
+  background: #ffedd5;
+}
+
+.project-row.tag-low {
+  border-left-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.project-row.tag-low:hover {
+  background: #f1f5f9;
+}
+
+.project-name {
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.project-name:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.project-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.project-completed-date {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.status-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-planning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-completed {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-on_hold {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Section Styling */
+.projects-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.section-title .count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  background-color: #e5e7eb;
+  color: #374151;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.section-title .toggle-icon {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: #6b7280;
+  transition: transform 0.2s;
+}
+
+.projects-list.hidden {
+  display: none;
+}
+
+/* Rotate icon when collapsed */
+.projects-section[data-controller="collapsible"] .section-title:hover {
+  opacity: 0.8;
+}
+
+.projects-section[data-controller="collapsible"] .section-title .toggle-icon {
+  transition: transform 0.2s;
+}
+
+/* When content is hidden, rotate icon */
+.projects-section[data-controller="collapsible"]:has(.projects-list.hidden) .toggle-icon {
+  transform: rotate(-90deg);
+}

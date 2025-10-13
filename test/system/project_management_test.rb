@@ -53,11 +53,11 @@ class ProjectManagementTest < ApplicationSystemTestCase
     # Visit the home page
     visit root_path
 
-    # Should see both projects
+    # Should see both projects (names only, descriptions not shown on index)
     assert_text "First Project"
     assert_text "Second Project"
-    assert_text "First test project"
-    assert_text "Second test project"
+    assert_text "Active"
+    assert_text "Planned"
 
     # Click on the first project
     click_on "First Project"

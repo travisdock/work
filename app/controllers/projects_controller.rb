@@ -2,7 +2,8 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [ :show, :edit, :update, :destroy, :archive ]
 
   def index
-    @projects = Project.includes(:tasks).by_priority
+    @active_projects = Project.not_completed.by_priority
+    @archived_projects = Project.archived.by_completed_at
   end
 
   def show

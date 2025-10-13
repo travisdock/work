@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_09_23_000042) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_10_212037) do
   create_table "projects", force: :cascade do |t|
+    t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.text "description"
     t.date "due_date"
@@ -22,6 +23,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_09_23_000042) do
     t.date "start_date"
     t.integer "status", default: 0
     t.datetime "updated_at", null: false
+    t.index ["status", "completed_at"], name: "index_projects_on_status_and_completed_at"
+    t.index ["status", "updated_at"], name: "index_projects_on_status_and_updated_at"
     t.index ["status"], name: "index_projects_on_status"
   end
 

@@ -76,10 +76,20 @@ class ProjectTest < ActiveSupport::TestCase
     assert @project.active?
     @project.on_hold!
     assert @project.on_hold?
+
+    # completed! and cancelled! should automatically set completed_at via callback
     @project.completed!
     assert @project.completed?
+    assert_not_nil @project.completed_at
+
     @project.cancelled!
     assert @project.cancelled?
+    assert_not_nil @project.completed_at
+
+    # Going back to active should clear completed_at
+    @project.active!
+    assert @project.active?
+    assert_nil @project.completed_at
   end
 
   test "active scope should return only active projects" do
