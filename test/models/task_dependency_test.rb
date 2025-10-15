@@ -2,9 +2,10 @@ require "test_helper"
 
 class TaskDependencyTest < ActiveSupport::TestCase
   def setup
-    @project = Project.create!(name: "Test Project")
-    @task1 = Task.create!(title: "Task 1", project: @project)
-    @task2 = Task.create!(title: "Task 2", project: @project)
+    @user = users(:alice)
+    @project = Project.create!(name: "Test Project", user: @user)
+    @task1 = Task.create!(title: "Task 1", project: @project, user: @user)
+    @task2 = Task.create!(title: "Task 2", project: @project, user: @user)
     @dependency = TaskDependency.new(predecessor_task: @task1, successor_task: @task2)
   end
 
@@ -44,8 +45,8 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should not allow dependencies between tasks in different projects" do
-    other_project = Project.create!(name: "Other Project")
-    other_task = Task.create!(title: "Other Task", project: other_project)
+    other_project = Project.create!(name: "Other Project", user: @user)
+    other_task = Task.create!(title: "Other Task", project: other_project, user: @user)
 
     @dependency.successor_task = other_task
     assert_not @dependency.valid?
@@ -62,7 +63,7 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should detect complex circular dependency" do
-    task3 = Task.create!(title: "Task 3", project: @project)
+    task3 = Task.create!(title: "Task 3", project: @project, user: @user)
 
     # Create chain: task1 -> task2 -> task3
     @dependency.save!
@@ -75,8 +76,8 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should allow valid dependency chains" do
-    task3 = Task.create!(title: "Task 3", project: @project)
-    task4 = Task.create!(title: "Task 4", project: @project)
+    task3 = Task.create!(title: "Task 3", project: @project, user: @user)
+    task4 = Task.create!(title: "Task 4", project: @project, user: @user)
 
     # Create valid chain: task1 -> task2 -> task3 -> task4
     @dependency.save!
@@ -111,7 +112,7 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should handle multiple predecessors correctly" do
-    task3 = Task.create!(title: "Task 3", project: @project)
+    task3 = Task.create!(title: "Task 3", project: @project, user: @user)
 
     # Create two dependencies to task3
     dep1 = TaskDependency.create!(predecessor_task: @task1, successor_task: task3)
@@ -135,7 +136,7 @@ class TaskDependencyTest < ActiveSupport::TestCase
 
   test "circular dependency detection should handle deep chains" do
     # Create a longer chain
-    tasks = (3..6).map { |i| Task.create!(title: "Task #{i}", project: @project) }
+    tasks = (3..6).map { |i| Task.create!(title: "Task #{i}", project: @project, user: @user) }
 
     # Create chain: task1 -> task2 -> task3 -> task4 -> task5 -> task6
     @dependency.save! # task1 -> task2
@@ -151,7 +152,7 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should allow same task to be predecessor for multiple tasks" do
-    task3 = Task.create!(title: "Task 3", project: @project)
+    task3 = Task.create!(title: "Task 3", project: @project, user: @user)
 
     dep1 = TaskDependency.create!(predecessor_task: @task1, successor_task: @task2)
     dep2 = TaskDependency.create!(predecessor_task: @task1, successor_task: task3)
@@ -161,7 +162,7 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should allow same task to have multiple predecessors" do
-    task3 = Task.create!(title: "Task 3", project: @project)
+    task3 = Task.create!(title: "Task 3", project: @project, user: @user)
 
     dep1 = TaskDependency.create!(predecessor_task: @task1, successor_task: task3)
     dep2 = TaskDependency.create!(predecessor_task: @task2, successor_task: task3)

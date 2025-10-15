@@ -2,8 +2,8 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [ :show, :edit, :update, :destroy, :archive ]
 
   def index
-    @active_projects = Project.not_completed.by_priority
-    @archived_projects = Project.archived.by_completed_at
+    @active_projects = current_user.projects.not_completed.by_priority
+    @archived_projects = current_user.projects.archived.by_completed_at
   end
 
   def show
@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params)
+    @project = current_user.projects.build(project_params)
 
     if @project.save
       redirect_to @project, notice: "Project was successfully created."
@@ -48,7 +48,7 @@ class ProjectsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:id])
+    @project = current_user.projects.find(params[:id])
   end
 
   def project_params

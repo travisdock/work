@@ -1,0 +1,23 @@
+<div class="auth-container">
+  <h1>Sign In</h1>
+
+  <%= form_with url: sign_in_path, method: :post do |form| %>
+    <div class="field">
+      <%= form.label :email_address, "Email" %>
+      <%= form.email_field :email_address, autofocus: true, required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :password %>
+      <%= form.password_field :password, required: true %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "Sign In" %>
+    </div>
+  <% end %>
+
+  <p class="auth-link">
+    Don't have an account? <%= link_to "Sign up", sign_up_path %>
+  </p>
+</div>

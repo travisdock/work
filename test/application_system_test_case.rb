@@ -8,4 +8,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     driver_option.add_argument("--remote-debugging-port=0")
     driver_option.add_argument("--user-data-dir=/tmp/chrome_test_#{Process.pid}_#{Time.now.to_i}")
   end
+
+  def sign_in_as(user)
+    visit sign_in_path
+    fill_in "Email", with: user.email_address
+    fill_in "Password", with: "password"
+    click_on "Sign In"
+  end
 end

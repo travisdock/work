@@ -2,8 +2,9 @@ require "test_helper"
 
 class TaskTest < ActiveSupport::TestCase
   def setup
-    @project = Project.create!(name: "Test Project")
-    @task = Task.new(title: "Test Task", project: @project)
+    @user = users(:alice)
+    @project = Project.create!(name: "Test Project", user: @user)
+    @task = Task.new(title: "Test Task", project: @project, user: @user)
   end
 
   test "should be valid with valid attributes" do
@@ -53,15 +54,15 @@ class TaskTest < ActiveSupport::TestCase
 
   test "should have subtasks association" do
     @task.save!
-    subtask = @task.subtasks.create!(title: "Subtask", project: @project)
+    subtask = @task.subtasks.create!(title: "Subtask", project: @project, user: @user)
     assert_equal 1, @task.subtasks.count
     assert_includes @task.subtasks, subtask
     assert_equal @task, subtask.parent_task
   end
 
   test "should validate parent task is in same project" do
-    other_project = Project.create!(name: "Other Project")
-    other_task = Task.create!(title: "Other Task", project: other_project)
+    other_project = Project.create!(name: "Other Project", user: @user)
+    other_task = Task.create!(title: "Other Task", project: other_project, user: @user)
 
     @task.parent_task = other_task
     assert_not @task.valid?
@@ -106,7 +107,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "root_tasks scope should return only tasks without parent" do
     @task.save!
-    subtask = Task.create!(title: "Subtask", project: @project, parent_task: @task)
+    subtask = Task.create!(title: "Subtask", project: @project, parent_task: @task, user: @user)
 
     root_tasks = Task.root_tasks
     assert_includes root_tasks, @task
@@ -115,7 +116,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "incomplete scope should exclude done tasks" do
     @task.save!
-    done_task = Task.create!(title: "Done Task", project: @project, status: :done)
+    done_task = Task.create!(title: "Done Task", project: @project, status: :done, user: @user)
 
     incomplete_tasks = Task.incomplete
     assert_includes incomplete_tasks, @task
@@ -124,7 +125,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "should handle dependencies correctly" do
     @task.save!
-    predecessor = Task.create!(title: "Predecessor", project: @project)
+    predecessor = Task.create!(title: "Predecessor", project: @project, user: @user)
 
     # Create dependency
     TaskDependency.create!(predecessor_task: predecessor, successor_task: @task)
@@ -144,7 +145,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "should automatically become blocked when dependency added" do
     @task.save!
-    predecessor = Task.create!(title: "Predecessor", project: @project, status: :todo)
+    predecessor = Task.create!(title: "Predecessor", project: @project, status: :todo, user: @user)
 
     # Initially not blocked
     assert_not @task.blocked?
@@ -158,7 +159,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "should automatically unblock when dependencies complete" do
     @task.save!
-    predecessor = Task.create!(title: "Predecessor", project: @project, status: :todo)
+    predecessor = Task.create!(title: "Predecessor", project: @project, status: :todo, user: @user)
     TaskDependency.create!(predecessor_task: predecessor, successor_task: @task)
 
     # Task should be blocked
@@ -176,7 +177,7 @@ class TaskTest < ActiveSupport::TestCase
 
   test "should destroy associated dependencies when destroyed" do
     @task.save!
-    other_task = Task.create!(title: "Other Task", project: @project)
+    other_task = Task.create!(title: "Other Task", project: @project, user: @user)
     dependency = TaskDependency.create!(predecessor_task: @task, successor_task: other_task)
 
     dependency_id = dependency.id
@@ -187,8 +188,8 @@ class TaskTest < ActiveSupport::TestCase
 
   test "should handle multiple dependencies correctly" do
     @task.save!
-    pred1 = Task.create!(title: "Pred 1", project: @project, status: :todo)
-    pred2 = Task.create!(title: "Pred 2", project: @project, status: :done)
+    pred1 = Task.create!(title: "Pred 1", project: @project, status: :todo, user: @user)
+    pred2 = Task.create!(title: "Pred 2", project: @project, status: :done, user: @user)
 
     TaskDependency.create!(predecessor_task: pred1, successor_task: @task)
     TaskDependency.create!(predecessor_task: pred2, successor_task: @task)

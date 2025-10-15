@@ -2,7 +2,9 @@ require "application_system_test_case"
 
 class TaskManagementTest < ApplicationSystemTestCase
   setup do
-    @project = Project.create!(
+    @user = users(:alice)
+    sign_in_as(@user)
+    @project = @user.projects.create!(
       name: "Test Project",
       description: "A project for testing tasks",
       status: :active,
@@ -43,6 +45,7 @@ class TaskManagementTest < ApplicationSystemTestCase
   test "user can view tasks within a project" do
     # Create some tasks
     task1 = @project.tasks.create!(
+      user: @user,
       title: "First Task",
       description: "Description of first task",
       priority_number: 4,
@@ -50,6 +53,7 @@ class TaskManagementTest < ApplicationSystemTestCase
     )
 
     task2 = @project.tasks.create!(
+      user: @user,
       title: "Second Task",
       description: "Description of second task",
       priority_number: 2,
@@ -72,6 +76,7 @@ class TaskManagementTest < ApplicationSystemTestCase
 
   test "user can edit a task" do
     task = @project.tasks.create!(
+      user: @user,
       title: "Editable Task",
       description: "Original description",
       priority_number: 2,
@@ -102,10 +107,10 @@ class TaskManagementTest < ApplicationSystemTestCase
 
   test "user can view all tasks across projects" do
     # Create another project with tasks
-    project2 = Project.create!(name: "Second Project", status: :active, priority_number: 2)
+    project2 = @user.projects.create!(name: "Second Project", status: :active, priority_number: 2)
 
-    task1 = @project.tasks.create!(title: "Task in Project 1", status: :todo, priority_number: 3)
-    task2 = project2.tasks.create!(title: "Task in Project 2", status: :in_progress, priority_number: 4)
+    task1 = @project.tasks.create!(user: @user, title: "Task in Project 1", status: :todo, priority_number: 3)
+    task2 = project2.tasks.create!(user: @user, title: "Task in Project 2", status: :in_progress, priority_number: 4)
 
     visit tasks_path
 
@@ -131,6 +136,7 @@ class TaskManagementTest < ApplicationSystemTestCase
   test "user can create a subtask" do
     # Create a parent task first
     parent_task = @project.tasks.create!(
+      user: @user,
       title: "Parent Task",
       description: "This will have subtasks",
       priority_number: 3,

@@ -1,6 +1,11 @@
 require "application_system_test_case"
 
 class ProjectManagementTest < ApplicationSystemTestCase
+  setup do
+    @user = users(:alice)
+    sign_in_as(@user)
+  end
+
   test "user can create a new project and view it" do
     # Start at the home page
     visit root_path
@@ -36,14 +41,14 @@ class ProjectManagementTest < ApplicationSystemTestCase
 
   test "user can navigate between projects and see project list" do
     # Create some test projects
-    project1 = Project.create!(
+    project1 = @user.projects.create!(
       name: "First Project",
       description: "First test project",
       status: :active,
       priority_number: 3
     )
 
-    project2 = Project.create!(
+    project2 = @user.projects.create!(
       name: "Second Project",
       description: "Second test project",
       status: :planned,
@@ -75,7 +80,7 @@ class ProjectManagementTest < ApplicationSystemTestCase
   end
 
   test "user can edit a project" do
-    project = Project.create!(
+    project = @user.projects.create!(
       name: "Editable Project",
       description: "Original description",
       status: :planned,

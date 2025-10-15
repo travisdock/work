@@ -2,7 +2,8 @@ require "test_helper"
 
 class ProjectTest < ActiveSupport::TestCase
   def setup
-    @project = Project.new(name: "Test Project", description: "Testing project model")
+    @user = users(:alice)
+    @project = Project.new(name: "Test Project", description: "Testing project model", user: @user)
   end
 
   test "should be valid with valid attributes" do
@@ -52,8 +53,8 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "should have many tasks" do
     @project.save!
-    task1 = @project.tasks.create!(title: "Task 1")
-    task2 = @project.tasks.create!(title: "Task 2")
+    task1 = @project.tasks.create!(title: "Task 1", user: @user)
+    task2 = @project.tasks.create!(title: "Task 2", user: @user)
     assert_equal 2, @project.tasks.count
     assert_includes @project.tasks, task1
     assert_includes @project.tasks, task2
@@ -61,7 +62,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "should destroy associated tasks when destroyed" do
     @project.save!
-    task = @project.tasks.create!(title: "Task 1")
+    task = @project.tasks.create!(title: "Task 1", user: @user)
     task_id = task.id
 
     @project.destroy
@@ -93,8 +94,8 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "active scope should return only active projects" do
-    active_project = Project.create!(name: "Active", status: :active)
-    planned_project = Project.create!(name: "Planned", status: :planned)
+    active_project = Project.create!(name: "Active", status: :active, user: @user)
+    planned_project = Project.create!(name: "Planned", status: :planned, user: @user)
 
     active_projects = Project.active
     assert_includes active_projects, active_project
@@ -103,9 +104,9 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "by_priority scope should order by priority descending" do
     # Use separate test projects to avoid fixture interference
-    low_priority = Project.create!(name: "Test Low Priority", priority_number: 1)
-    high_priority = Project.create!(name: "Test High Priority", priority_number: 5)
-    medium_priority = Project.create!(name: "Test Medium Priority", priority_number: 3)
+    low_priority = Project.create!(name: "Test Low Priority", priority_number: 1, user: @user)
+    high_priority = Project.create!(name: "Test High Priority", priority_number: 5, user: @user)
+    medium_priority = Project.create!(name: "Test Medium Priority", priority_number: 3, user: @user)
 
     # Only check our test projects
     test_projects = Project.where(name: [ "Test Low Priority", "Test High Priority", "Test Medium Priority" ])

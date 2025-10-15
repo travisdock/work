@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # Authentication routes
+  get "sign_up", to: "registrations#new"
+  post "sign_up", to: "registrations#create"
+  get "sign_in", to: "sessions#new"
+  post "sign_in", to: "sessions#create"
+  delete "sign_out", to: "sessions#destroy"
+
   # Root route
   root "projects#index"
 

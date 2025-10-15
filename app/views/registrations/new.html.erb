@@ -1,0 +1,40 @@
+<div class="auth-container">
+  <h1>Sign Up</h1>
+
+  <%= form_with model: @user, url: sign_up_path, method: :post do |form| %>
+    <% if @user.errors.any? %>
+      <div class="error-messages">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this account from being saved:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :email_address, "Email" %>
+      <%= form.email_field :email_address, autofocus: true, required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :password %>
+      <%= form.password_field :password, required: true %>
+      <span class="hint">Minimum 8 characters</span>
+    </div>
+
+    <div class="field">
+      <%= form.label :password_confirmation %>
+      <%= form.password_field :password_confirmation, required: true %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "Sign Up" %>
+    </div>
+  <% end %>
+
+  <p class="auth-link">
+    Already have an account? <%= link_to "Sign in", sign_in_path %>
+  </p>
+</div>

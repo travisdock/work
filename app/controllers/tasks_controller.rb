@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [ :show, :edit, :update, :destroy, :complete ]
 
   def index
-    @tasks = Task.includes(:project, :predecessors, :successors).incomplete.by_position
+    @tasks = current_user.tasks.includes(:project, :predecessors, :successors).incomplete.by_position
   end
 
   def show
@@ -18,6 +18,7 @@ class TasksController < ApplicationController
 
   def create
     @task = @project.tasks.build(task_params)
+    @task.user = current_user
 
     if @task.save
       redirect_to [ @project, @task ], notice: "Task was successfully created."
@@ -63,14 +64,14 @@ class TasksController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:project_id])
+    @project = current_user.projects.find(params[:project_id])
   end
 
   def set_task
     if params[:project_id] && @project
       @task = @project.tasks.find(params[:id])
     else
-      @task = Task.find(params[:id])
+      @task = current_user.tasks.find(params[:id])
       @project = @task.project
     end
   end

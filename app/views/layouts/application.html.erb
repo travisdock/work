@@ -29,6 +29,13 @@
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <nav class="main-nav">
+        <span class="user-info">Signed in as <%= current_user.email_address %></span>
+        <%= button_to "Sign Out", sign_out_path, method: :delete, class: "sign-out-btn" %>
+      </nav>
+    <% end %>
+
     <% if notice %>
       <div class="flash notice"><%= notice %></div>
     <% end %>

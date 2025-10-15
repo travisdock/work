@@ -63,3 +63,14 @@ This is a Rails 8.1 application using the standard Rails architecture with SQLit
 - Application module: `Work` (defined in config/application.rb:9)
 - Autoloading configured for `lib/` directory (excluding assets and tasks)
 - Health check endpoint at `/up`
+
+### Authentication
+- Session-based authentication using bcrypt and `has_secure_password`
+- User model with email_address (normalized) and password_digest fields
+- Authentication concern provides `current_user`, `user_signed_in?`, and `authenticate_user!` methods
+- Current user stored in thread-safe `Current` attributes
+- Session regeneration on sign in/out prevents session fixation attacks
+- All projects and tasks are scoped to authenticated users
+- Test fixtures available (alice@example.com and bob@example.com, password: "password")
+- Authentication helper method `sign_in_as(user)` available in tests
+- Demo user: demo@example.com (password: password123)

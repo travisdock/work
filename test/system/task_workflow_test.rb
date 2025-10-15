@@ -204,7 +204,10 @@ class TaskWorkflowTest < ApplicationSystemTestCase
     # Should be redirected back to project page
     assert_current_path project_path(@project)
 
-    # Project status should be updated
+    # Should see the status changed to Completed on the page
+    assert_text "Completed"
+
+    # Project status should be updated in the database
     assert @project.reload.completed?
   end
 

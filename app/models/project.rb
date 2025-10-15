@@ -9,6 +9,7 @@ class Project < ApplicationRecord
   }, default: :planned
 
   # Associations
+  belongs_to :user
   has_many :tasks, dependent: :destroy
 
   # Validations

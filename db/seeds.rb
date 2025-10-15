@@ -7,10 +7,20 @@ if Rails.env.development?
   TaskDependency.destroy_all
   Task.destroy_all
   Project.destroy_all
+  User.destroy_all
 end
 
+# Create test users
+demo_user = User.create!(
+  email_address: "demo@example.com",
+  password: "password123",
+  password_confirmation: "password123"
+)
+
+puts "Created user: #{demo_user.email_address}"
+
 # Create sample projects
-project1 = Project.create!(
+project1 = demo_user.projects.create!(
   name: "Website Redesign",
   description: "Complete overhaul of company website with modern design and improved user experience",
   status: :active,
@@ -21,7 +31,7 @@ project1 = Project.create!(
   next_action: "Finalize wireframes with design team"
 )
 
-project2 = Project.create!(
+project2 = demo_user.projects.create!(
   name: "Q4 Marketing Campaign",
   description: "Plan and execute marketing campaign for Q4 product launch",
   status: :planned,
@@ -32,7 +42,7 @@ project2 = Project.create!(
   next_action: "Schedule kickoff meeting with marketing team"
 )
 
-project3 = Project.create!(
+project3 = demo_user.projects.create!(
   name: "Internal Tool Development",
   description: "Build internal productivity tools for team collaboration",
   status: :active,
@@ -51,7 +61,8 @@ wireframes = project1.tasks.create!(
   priority_number: 4,
   priority_tags: [ "urgent" ],
   effort_estimate: "1 week",
-  position: 1
+  position: 1,
+  user: demo_user
 )
 
 research = project1.tasks.create!(
@@ -60,7 +71,8 @@ research = project1.tasks.create!(
   status: :done,
   priority_number: 3,
   effort_estimate: "3 days",
-  position: 2
+  position: 2,
+  user: demo_user
 )
 
 development = project1.tasks.create!(
@@ -70,7 +82,8 @@ development = project1.tasks.create!(
   priority_number: 4,
   priority_tags: [ "important" ],
   effort_estimate: "3 weeks",
-  position: 3
+  position: 3,
+  user: demo_user
 )
 
 testing = project1.tasks.create!(
@@ -79,7 +92,8 @@ testing = project1.tasks.create!(
   status: :todo,
   priority_number: 3,
   effort_estimate: "1 week",
-  position: 4
+  position: 4,
+  user: demo_user
 )
 
 # Create subtasks for frontend development
@@ -90,7 +104,8 @@ frontend_setup = project1.tasks.create!(
   status: :todo,
   priority_number: 4,
   effort_estimate: "1 day",
-  position: 1
+  position: 1,
+  user: demo_user
 )
 
 frontend_components = project1.tasks.create!(
@@ -100,7 +115,8 @@ frontend_components = project1.tasks.create!(
   status: :todo,
   priority_number: 3,
   effort_estimate: "1 week",
-  position: 2
+  position: 2,
+  user: demo_user
 )
 
 # Create dependencies
@@ -116,7 +132,8 @@ campaign_strategy = project2.tasks.create!(
   status: :todo,
   priority_number: 4,
   effort_estimate: "1 week",
-  position: 1
+  position: 1,
+  user: demo_user
 )
 
 content_creation = project2.tasks.create!(
@@ -125,7 +142,8 @@ content_creation = project2.tasks.create!(
   status: :todo,
   priority_number: 3,
   effort_estimate: "2 weeks",
-  position: 2
+  position: 2,
+  user: demo_user
 )
 
 # Create tasks for Internal Tool
@@ -135,7 +153,8 @@ requirements = project3.tasks.create!(
   status: :in_progress,
   priority_number: 3,
   effort_estimate: "1 week",
-  position: 1
+  position: 1,
+  user: demo_user
 )
 
 prototype = project3.tasks.create!(
@@ -144,7 +163,8 @@ prototype = project3.tasks.create!(
   status: :todo,
   priority_number: 2,
   effort_estimate: "2 weeks",
-  position: 2
+  position: 2,
+  user: demo_user
 )
 
 # Add dependency for marketing campaign
@@ -153,4 +173,5 @@ TaskDependency.create!(predecessor_task: campaign_strategy, successor_task: cont
 # Add dependency for internal tool
 TaskDependency.create!(predecessor_task: requirements, successor_task: prototype)
 
+puts "Created #{User.count} users"
 puts "Created #{Project.count} projects with #{Task.count} tasks and #{TaskDependency.count} dependencies"

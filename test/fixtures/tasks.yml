@@ -1,6 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  user: alice
   title: Task One
   description: First test task
   project: one
@@ -15,6 +16,7 @@ one:
   position: 1
 
 two:
+  user: alice
   title: Task Two
   description: Second test task
   project: one
