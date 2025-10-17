@@ -14,5 +14,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     fill_in "Email", with: user.email_address
     fill_in "Password", with: "password"
     click_on "Sign In"
+    # Wait for successful sign-in and redirect
+    assert_current_path root_path
   end
 end

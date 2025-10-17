@@ -2,7 +2,10 @@ require "application_system_test_case"
 
 class TaskWorkflowTest < ApplicationSystemTestCase
   setup do
-    @project = Project.create!(
+    @user = users(:alice)
+    sign_in_as(@user)
+
+    @project = @user.projects.create!(
       name: "Workflow Test Project",
       description: "Testing task workflows and dependencies",
       status: :active,
@@ -15,7 +18,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       title: "Completable Task",
       description: "A task that can be completed",
       status: :todo,
-      priority_number: 3
+      priority_number: 3,
+      user: @user
     )
 
     visit project_path(@project)
@@ -44,7 +48,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       title: "Parent Task",
       description: "This has subtasks",
       status: :in_progress,
-      priority_number: 4
+      priority_number: 4,
+      user: @user
     )
 
     # Create subtasks
@@ -53,7 +58,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       description: "First child task",
       parent_task: parent_task,
       status: :todo,
-      priority_number: 3
+      priority_number: 3,
+      user: @user
     )
 
     subtask2 = @project.tasks.create!(
@@ -61,7 +67,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       description: "Second child task",
       parent_task: parent_task,
       status: :done,
-      priority_number: 2
+      priority_number: 2,
+      user: @user
     )
 
     visit project_path(@project)
@@ -91,7 +98,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       description: "Design the user interface",
       status: :done,
       priority_number: 4,
-      position: 1
+      position: 1,
+      user: @user
     )
 
     development_task = @project.tasks.create!(
@@ -99,7 +107,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       description: "Code the user interface",
       status: :in_progress,
       priority_number: 4,
-      position: 2
+      position: 2,
+      user: @user
     )
 
     testing_task = @project.tasks.create!(
@@ -107,7 +116,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       description: "Quality assurance testing",
       status: :todo,
       priority_number: 3,
-      position: 3
+      position: 3,
+      user: @user
     )
 
     # Create a dependency
@@ -152,14 +162,16 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       title: "First Task",
       description: "Must be done first",
       status: :todo,
-      priority_number: 4
+      priority_number: 4,
+      user: @user
     )
 
     second_task = @project.tasks.create!(
       title: "Dependent Task",
       description: "Depends on first task",
       status: :todo,
-      priority_number: 3
+      priority_number: 3,
+      user: @user
     )
 
     # Create dependency
@@ -188,7 +200,8 @@ class TaskWorkflowTest < ApplicationSystemTestCase
     @project.tasks.create!(
       title: "Completed Task",
       status: :done,
-      priority_number: 3
+      priority_number: 3,
+      user: @user
     )
 
     visit project_path(@project)
