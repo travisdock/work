@@ -2,7 +2,7 @@ require "test_helper"
 
 class TaskDependencyTest < ActiveSupport::TestCase
   def setup
-    @project = Project.create!(name: "Test Project")
+    @project = Project.create!(name: "Test Project", user: users(:one))
     @task1 = Task.create!(title: "Task 1", project: @project)
     @task2 = Task.create!(title: "Task 2", project: @project)
     @dependency = TaskDependency.new(predecessor_task: @task1, successor_task: @task2)
@@ -44,7 +44,7 @@ class TaskDependencyTest < ActiveSupport::TestCase
   end
 
   test "should not allow dependencies between tasks in different projects" do
-    other_project = Project.create!(name: "Other Project")
+    other_project = Project.create!(name: "Other Project", user: users(:two))
     other_task = Task.create!(title: "Other Task", project: other_project)
 
     @dependency.successor_task = other_task

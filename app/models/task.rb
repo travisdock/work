@@ -10,6 +10,7 @@ class Task < ApplicationRecord
 
   # Associations
   belongs_to :project
+  belongs_to :user
   belongs_to :parent_task, class_name: "Task", optional: true
   has_many :subtasks, class_name: "Task", foreign_key: "parent_task_id", dependent: :destroy
 
@@ -31,9 +32,11 @@ class Task < ApplicationRecord
   scope :root_tasks, -> { where(parent_task_id: nil) }
   scope :incomplete, -> { where.not(status: :done) }
   scope :by_position, -> { order(:position) }
+  scope :for_user, ->(user) { where(user_id: user&.id) }
 
   # Callbacks
   before_validation :set_defaults
+  before_validation :assign_user_from_project
   after_save :check_if_blocked
 
   # Instance methods
@@ -54,6 +57,10 @@ class Task < ApplicationRecord
   def set_defaults
     self.priority_number ||= 3
     self.priority_tags ||= []
+  end
+
+  def assign_user_from_project
+    self.user ||= project&.user
   end
 
   def parent_task_must_be_in_same_project

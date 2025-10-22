@@ -2,7 +2,7 @@ require "test_helper"
 
 class ProjectTest < ActiveSupport::TestCase
   def setup
-    @project = Project.new(name: "Test Project", description: "Testing project model")
+    @project = Project.new(name: "Test Project", description: "Testing project model", user: users(:one))
   end
 
   test "should be valid with valid attributes" do
@@ -93,8 +93,8 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "active scope should return only active projects" do
-    active_project = Project.create!(name: "Active", status: :active)
-    planned_project = Project.create!(name: "Planned", status: :planned)
+    active_project = Project.create!(name: "Active", status: :active, user: users(:one))
+    planned_project = Project.create!(name: "Planned", status: :planned, user: users(:one))
 
     active_projects = Project.active
     assert_includes active_projects, active_project
@@ -103,9 +103,9 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "by_priority scope should order by priority descending" do
     # Use separate test projects to avoid fixture interference
-    low_priority = Project.create!(name: "Test Low Priority", priority_number: 1)
-    high_priority = Project.create!(name: "Test High Priority", priority_number: 5)
-    medium_priority = Project.create!(name: "Test Medium Priority", priority_number: 3)
+    low_priority = Project.create!(name: "Test Low Priority", priority_number: 1, user: users(:one))
+    high_priority = Project.create!(name: "Test High Priority", priority_number: 5, user: users(:one))
+    medium_priority = Project.create!(name: "Test Medium Priority", priority_number: 3, user: users(:one))
 
     # Only check our test projects
     test_projects = Project.where(name: [ "Test Low Priority", "Test High Priority", "Test Medium Priority" ])
