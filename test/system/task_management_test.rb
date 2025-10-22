@@ -2,12 +2,38 @@ require "application_system_test_case"
 
 class TaskManagementTest < ApplicationSystemTestCase
   setup do
-    @project = Project.create!(
+    @user = system_test_user
+    @project = @user.projects.create!(
       name: "Test Project",
       description: "A project for testing tasks",
       status: :active,
       priority_number: 3
     )
+  end
+
+  test "user cannot access tasks from another user's project" do
+    other_user = users(:two)
+    other_project = other_user.projects.create!(
+      name: "Other User Project",
+      description: "Hidden from current user",
+      status: :active,
+      priority_number: 4
+    )
+    other_task = other_project.tasks.create!(
+      title: "Other User Task",
+      description: "Should not be visible",
+      status: :todo,
+      priority_number: 3
+    )
+
+    visit project_path(other_project)
+    assert_text "ActiveRecord::RecordNotFound"
+
+    visit project_task_path(other_project, other_task)
+    assert_text "ActiveRecord::RecordNotFound"
+
+    visit tasks_path
+    assert_no_text other_task.title
   end
 
   test "user can create a task within a project" do
@@ -42,14 +68,14 @@ class TaskManagementTest < ApplicationSystemTestCase
 
   test "user can view tasks within a project" do
     # Create some tasks
-    task1 = @project.tasks.create!(
+    @project.tasks.create!(
       title: "First Task",
       description: "Description of first task",
       priority_number: 4,
       status: :todo
     )
 
-    task2 = @project.tasks.create!(
+    @project.tasks.create!(
       title: "Second Task",
       description: "Description of second task",
       priority_number: 2,
@@ -102,10 +128,10 @@ class TaskManagementTest < ApplicationSystemTestCase
 
   test "user can view all tasks across projects" do
     # Create another project with tasks
-    project2 = Project.create!(name: "Second Project", status: :active, priority_number: 2)
+    project2 = @user.projects.create!(name: "Second Project", status: :active, priority_number: 2)
 
-    task1 = @project.tasks.create!(title: "Task in Project 1", status: :todo, priority_number: 3)
-    task2 = project2.tasks.create!(title: "Task in Project 2", status: :in_progress, priority_number: 4)
+    @project.tasks.create!(title: "Task in Project 1", status: :todo, priority_number: 3)
+    project2.tasks.create!(title: "Task in Project 2", status: :in_progress, priority_number: 4)
 
     visit tasks_path
 

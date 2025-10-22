@@ -29,6 +29,12 @@
   </head>
 
   <body>
+    <% if Current.user %>
+      <nav class="session-nav">
+        <span class="session-nav__user">Signed in as <%= Current.user.email_address %></span>
+        <%= button_to "Sign out", session_path, method: :delete, form: { class: "session-nav__form" } %>
+      </nav>
+    <% end %>
     <% if notice %>
       <div class="flash notice"><%= notice %></div>
     <% end %>

@@ -1,0 +1,37 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "auth", "data-turbo-track": "reload" %>
+<% end %>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <h1 class="auth-title">Create your account</h1>
+
+    <% if flash[:alert] %>
+      <div class="auth-flash auth-flash--alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <%= form_with model: @user, url: registration_path, class: "auth-form" do |form| %>
+      <div class="auth-field">
+        <%= form.label :email_address, "Email address" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", placeholder: "you@example.com" %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :password %>
+        <%= form.password_field :password, required: true, autocomplete: "new-password", minlength: 8, placeholder: "Choose a password" %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :password_confirmation, "Confirm password" %>
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat your password" %>
+      </div>
+
+      <%= form.submit "Sign up", class: "auth-submit" %>
+    <% end %>
+
+    <p class="auth-alt">
+      Already registered?
+      <%= link_to "Sign in", new_session_path %>
+    </p>
+  </div>
+</div>

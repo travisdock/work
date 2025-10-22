@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_10_212037) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_22_130000) do
   create_table "projects", force: :cascade do |t|
     t.datetime "completed_at"
     t.datetime "created_at", null: false
@@ -23,9 +23,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_212037) do
     t.date "start_date"
     t.integer "status", default: 0
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["status", "completed_at"], name: "index_projects_on_status_and_completed_at"
     t.index ["status", "updated_at"], name: "index_projects_on_status_and_updated_at"
     t.index ["status"], name: "index_projects_on_status"
+    t.index ["user_id", "status"], name: "index_projects_on_user_id_and_status"
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "ip_address"
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "task_dependencies", force: :cascade do |t|
@@ -54,13 +66,27 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_212037) do
     t.integer "status", default: 0
     t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["parent_task_id"], name: "index_tasks_on_parent_task_id"
     t.index ["project_id", "status"], name: "index_tasks_on_project_id_and_status"
     t.index ["project_id"], name: "index_tasks_on_project_id"
+    t.index ["user_id", "status"], name: "index_tasks_on_user_id_and_status"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
+  add_foreign_key "projects", "users"
+  add_foreign_key "sessions", "users"
   add_foreign_key "task_dependencies", "tasks", column: "predecessor_task_id"
   add_foreign_key "task_dependencies", "tasks", column: "successor_task_id"
   add_foreign_key "tasks", "projects"
   add_foreign_key "tasks", "tasks", column: "parent_task_id"
+  add_foreign_key "tasks", "users"
 end

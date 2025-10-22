@@ -2,7 +2,8 @@ require "application_system_test_case"
 
 class TaskWorkflowTest < ApplicationSystemTestCase
   setup do
-    @project = Project.create!(
+    @user = system_test_user
+    @project = @user.projects.create!(
       name: "Workflow Test Project",
       description: "Testing task workflows and dependencies",
       status: :active,
@@ -48,7 +49,7 @@ class TaskWorkflowTest < ApplicationSystemTestCase
     )
 
     # Create subtasks
-    subtask1 = @project.tasks.create!(
+    @project.tasks.create!(
       title: "First Subtask",
       description: "First child task",
       parent_task: parent_task,
@@ -56,7 +57,7 @@ class TaskWorkflowTest < ApplicationSystemTestCase
       priority_number: 3
     )
 
-    subtask2 = @project.tasks.create!(
+    @project.tasks.create!(
       title: "Second Subtask",
       description: "Second child task",
       parent_task: parent_task,
@@ -203,6 +204,7 @@ class TaskWorkflowTest < ApplicationSystemTestCase
 
     # Should be redirected back to project page
     assert_current_path project_path(@project)
+    assert_text "Project was archived."
 
     # Project status should be updated
     assert @project.reload.completed?

@@ -2,7 +2,7 @@ require "test_helper"
 
 class TaskTest < ActiveSupport::TestCase
   def setup
-    @project = Project.create!(name: "Test Project")
+    @project = Project.create!(name: "Test Project", user: users(:one))
     @task = Task.new(title: "Test Task", project: @project)
   end
 
@@ -60,7 +60,7 @@ class TaskTest < ActiveSupport::TestCase
   end
 
   test "should validate parent task is in same project" do
-    other_project = Project.create!(name: "Other Project")
+    other_project = Project.create!(name: "Other Project", user: users(:two))
     other_task = Task.create!(title: "Other Task", project: other_project)
 
     @task.parent_task = other_task

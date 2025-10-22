@@ -1,6 +1,10 @@
 require "application_system_test_case"
 
 class ProjectManagementTest < ApplicationSystemTestCase
+  setup do
+    @user = system_test_user
+  end
+
   test "user can create a new project and view it" do
     # Start at the home page
     visit root_path
@@ -36,14 +40,14 @@ class ProjectManagementTest < ApplicationSystemTestCase
 
   test "user can navigate between projects and see project list" do
     # Create some test projects
-    project1 = Project.create!(
+    project1 = @user.projects.create!(
       name: "First Project",
       description: "First test project",
       status: :active,
       priority_number: 3
     )
 
-    project2 = Project.create!(
+    project2 = @user.projects.create!(
       name: "Second Project",
       description: "Second test project",
       status: :planned,
@@ -74,8 +78,25 @@ class ProjectManagementTest < ApplicationSystemTestCase
     assert_text "Projects"
   end
 
+  test "user cannot see projects owned by another user" do
+    other_user = users(:two)
+    other_user_project = other_user.projects.create!(
+      name: "Unauthorized Project",
+      description: "Should not be visible",
+      status: :active,
+      priority_number: 4
+    )
+
+    visit project_path(other_user_project)
+
+    assert_text "ActiveRecord::RecordNotFound"
+
+    visit root_path
+    assert_no_text "Unauthorized Project"
+  end
+
   test "user can edit a project" do
-    project = Project.create!(
+    project = @user.projects.create!(
       name: "Editable Project",
       description: "Original description",
       status: :planned,
