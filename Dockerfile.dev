@@ -9,6 +9,12 @@ WORKDIR $APP_HOME
 ARG UID=1000
 ARG GID=1000
 
+# Install Chromium and ChromeDriver for system tests
+RUN apt-get update && apt-get install -y \
+      chromium \
+      chromium-driver \
+      && rm -rf /var/lib/apt/lists/*
+
 RUN bash -c "set -o pipefail && apt-get update \
   && apt-get install -y --no-install-recommends build-essential curl git libpq-dev libyaml-dev vim\
   && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
