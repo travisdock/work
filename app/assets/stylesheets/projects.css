@@ -19,20 +19,20 @@
 
 .project-row:hover {
   background: #f9fafb;
-  border-left-color: #3b82f6;
+  border-left-color: var(--accent-color);
 }
 
 /* Priority color coding */
 .project-row.priority-1 {
-  border-left-color: #93c5fd;
+  border-left-color: var(--accent-color-tint);
 }
 
 .project-row.priority-2 {
-  border-left-color: #60a5fa;
+  border-left-color: var(--accent-color-muted);
 }
 
 .project-row.priority-3 {
-  border-left-color: #3b82f6;
+  border-left-color: var(--accent-color);
 }
 
 .project-row.priority-4 {
@@ -80,7 +80,7 @@
 }
 
 .project-name:hover {
-  color: #3b82f6;
+  color: var(--accent-color);
   text-decoration: underline;
 }
 
@@ -109,8 +109,8 @@
 }
 
 .status-completed {
-  background-color: #cce5ff;
-  color: #004085;
+  background-color: var(--accent-color-soft);
+  color: var(--accent-color-strong);
 }
 
 .status-on_hold {

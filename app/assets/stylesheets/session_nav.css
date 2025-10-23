@@ -27,10 +27,10 @@
 }
 
 .session-nav__button {
-  background: #f6f5f0;
-  border: 1px solid #dedbd5;
+  background: var(--accent-color-soft);
+  border: 1px solid var(--accent-color);
   border-radius: 8px;
-  color: #2f3437;
+  color: var(--accent-color-strong);
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
@@ -39,7 +39,8 @@
 }
 
 .session-nav__button:hover {
-  background: #ece9e3;
-  border-color: #d3cfc7;
-  box-shadow: 0 2px 6px rgba(15, 15, 15, 0.08);
+  background: var(--accent-color);
+  border-color: var(--accent-color-strong);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(41, 88, 163, 0.18);
 }

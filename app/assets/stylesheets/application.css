@@ -9,6 +9,16 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+@import "session_nav.css";
+
+:root {
+  --accent-color: #2958A3;
+  --accent-color-strong: #1F467F;
+  --accent-color-muted: #4A76B9;
+  --accent-color-tint: #9CB7DE;
+  --accent-color-soft: #E2E9F5;
+}
+
 /* Set Patrick Hand as the default font for the entire application */
 body {
   font-family: 'Patrick Hand', cursive;
@@ -41,7 +51,7 @@ body {
 
 .btn-text {
   padding: 0.25rem 0.5rem;
-  color: #3b82f6;
+  color: var(--accent-color);
   text-decoration: none;
   font-weight: 500;
   transition: background-color 0.2s;
@@ -49,7 +59,7 @@ body {
 }
 
 .btn-text:hover {
-  background-color: #f0f8ff;
+  background-color: var(--accent-color-soft);
 }
 
 /* Page layout styles */
@@ -72,7 +82,7 @@ body {
 }
 
 .btn-primary {
-  background-color: #3b82f6;
+  background-color: var(--accent-color);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -82,7 +92,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #2563eb;
+  background-color: var(--accent-color-strong);
 }
 
 /* Empty state */
