@@ -35,11 +35,13 @@
         <%= button_to "Sign out", session_path, method: :delete, form: { class: "session-nav__form" } %>
       </nav>
     <% end %>
-    <% if notice %>
-      <div class="flash notice"><%= notice %></div>
-    <% end %>
-    <% if alert %>
-      <div class="flash alert"><%= alert %></div>
+    <% unless content_for?(:suppress_layout_flash) %>
+      <% if notice %>
+        <div class="flash notice"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="flash alert"><%= alert %></div>
+      <% end %>
     <% end %>
     <%= yield %>
   </body>
