@@ -1,20 +1,21 @@
 <div class="notebook-page">
   <div class="page-header">
     <div class="project-header">
-      <div class="priority-mark priority-<%= @project.priority_number %>">
-        <%= "!" * @project.priority_number %>
-      </div>
-
       <div class="project-info">
-        <h1 class="project-title"><%= @project.name %></h1>
-        <span class="project-status status-<%= @project.status %>">
-          <%= @project.status.humanize %>
-        </span>
+        <h1 class="project-title">
+          <span class="priority-mark priority-<%= @project.priority_number %>">
+            <%= "!" * @project.priority_number %>
+          </span>
+          <%= @project.name %>
+          <span class="project-status project-status-inline status-<%= @project.status %>">
+            (<%= @project.status.humanize %>)
+          </span>
+        </h1>
       </div>
     </div>
 
     <div class="page-actions">
-      <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-secondary" %>
+      <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-primary" %>
       <%= link_to "New Task", new_project_task_path(@project), class: "btn btn-primary" %>
     </div>
   </div>
