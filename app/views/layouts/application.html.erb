@@ -32,8 +32,15 @@
     <% if Current.user %>
       <nav class="session-nav">
         <div class="session-nav__content">
-          <span class="session-nav__user"><%= Current.user.email_address %></span>
-          <%= button_to "Sign out", session_path, method: :delete, form: { class: "session-nav__form" }, class: "session-nav__button" %>
+          <div class="session-nav__left">
+            <% unless current_page?(projects_path) %>
+              <%= link_to "Projects", projects_path, class: "session-nav__link" %>
+            <% end %>
+          </div>
+          <div class="session-nav__right">
+            <span class="session-nav__user"><%= Current.user.email_address %></span>
+            <%= button_to "Sign out", session_path, method: :delete, form: { class: "session-nav__form" }, class: "session-nav__button" %>
+          </div>
         </div>
       </nav>
     <% end %>
