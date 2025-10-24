@@ -80,4 +80,21 @@
       <%= link_to "Cancel", @project, class: "btn btn-secondary" %>
     </div>
   <% end %>
+
+  <div class="project-actions">
+    <% unless @project.completed? %>
+      <%= link_to "Archive Project", archive_project_path(@project),
+                  class: "btn btn-secondary",
+                  data: {
+                    turbo_method: :patch,
+                    turbo_confirm: "Are you sure you want to archive this project?"
+                  } %>
+    <% end %>
+    <%= link_to "Delete Project", project_path(@project),
+                class: "btn btn-text text-error",
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure? This will delete all tasks too."
+                } %>
+  </div>
 </div>

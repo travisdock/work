@@ -71,7 +71,7 @@ class ProjectManagementTest < ApplicationSystemTestCase
     assert_current_path project_path(project1)
 
     # Navigate back to all projects
-    click_on "All Projects"
+    click_on "Projects"
 
     # Should be back on the projects index
     assert_current_path projects_path
