@@ -19,20 +19,20 @@
 
 .task-row:hover {
   background: #f9fafb;
-  border-left-color: #3b82f6;
+  border-left-color: var(--accent-color);
 }
 
 /* Priority color coding */
 .task-row.priority-1 {
-  border-left-color: #93c5fd;
+  border-left-color: var(--accent-color-tint);
 }
 
 .task-row.priority-2 {
-  border-left-color: #60a5fa;
+  border-left-color: var(--accent-color-muted);
 }
 
 .task-row.priority-3 {
-  border-left-color: #3b82f6;
+  border-left-color: var(--accent-color);
 }
 
 .task-row.priority-4 {
@@ -80,8 +80,8 @@
 }
 
 .task-checkbox:hover {
-  border-color: #3b82f6;
-  background: #f0f8ff;
+  border-color: var(--accent-color);
+  background: var(--accent-color-soft);
 }
 
 .task-checkbox.checked {
@@ -110,7 +110,7 @@
 }
 
 .task-name:hover {
-  color: #3b82f6;
+  color: var(--accent-color);
   text-decoration: underline;
 }
 
@@ -127,8 +127,8 @@
 }
 
 .task-status.status-in_progress {
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: var(--accent-color-soft);
+  color: var(--accent-color-strong);
 }
 
 .task-status.status-done {
