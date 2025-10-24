@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_23_121213) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_24_120238) do
   create_table "projects", force: :cascade do |t|
     t.datetime "completed_at"
     t.datetime "created_at", null: false
@@ -40,7 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_23_121213) do
     t.string "user_agent"
     t.integer "user_id", null: false
     t.index ["expires_at"], name: "index_sessions_on_expires_at"
-    t.index ["user_id", "last_activity_at"], name: "index_sessions_on_user_id_and_last_activity_at"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
