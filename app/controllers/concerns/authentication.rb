@@ -51,11 +51,14 @@ module Authentication
     end
 
     def start_new_session_for(user)
+      terminate_session if Current.session
+
       user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
         Current.session = session
         cookies.signed[:session_id] = {
           value: session.id,
           httponly: true,
+          secure: Rails.env.production?,
           same_site: :lax,
           expires: Session::ABSOLUTE_TIMEOUT.from_now
         }
