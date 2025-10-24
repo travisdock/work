@@ -8,9 +8,11 @@ module ApplicationCable
 
     private
       def set_current_user
-        if session = Session.eager_load(:user).find_by(id: cookies.signed[:session_id])
-          self.current_user = session.user
-        end
+        return unless (session = Session.includes(:user).find_by(id: cookies.signed[:session_id]))
+        return if session.expired?
+
+        session.touch_activity_if_stale!
+        self.current_user = session.user
       end
   end
 end
