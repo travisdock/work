@@ -4,7 +4,7 @@ class AddExpirationToSessions < ActiveRecord::Migration[8.1]
     add_column :sessions, :last_activity_at, :datetime
 
     add_index :sessions, :expires_at
-    add_index :sessions, [:user_id, :last_activity_at]
+    add_index :sessions, [ :user_id, :last_activity_at ]
 
     reversible do |dir|
       dir.up do

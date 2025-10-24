@@ -21,7 +21,7 @@ class Session < ApplicationRecord
     now = Time.current
     update_columns(
       last_activity_at: now,
-      expires_at: [absolute_deadline, inactivity_deadline(now)].min,
+      expires_at: [ absolute_deadline, inactivity_deadline(now) ].min,
       updated_at: now
     )
   end
@@ -43,7 +43,7 @@ class Session < ApplicationRecord
     now = Time.current
     absolute_cutoff = now + ABSOLUTE_TIMEOUT
     self.last_activity_at ||= now
-    self.expires_at ||= [absolute_cutoff, inactivity_deadline(now)].min
+    self.expires_at ||= [ absolute_cutoff, inactivity_deadline(now) ].min
   end
 
   def inactivity_deadline(reference_time)
