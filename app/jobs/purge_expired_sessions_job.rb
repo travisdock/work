@@ -2,6 +2,6 @@ class PurgeExpiredSessionsJob < ApplicationJob
   queue_as :default
 
   def perform
-    Session.expired.delete_all
+    Session.where("expires_at <= ?", Time.current).delete_all
   end
 end
