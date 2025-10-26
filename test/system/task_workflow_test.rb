@@ -194,6 +194,10 @@ class TaskWorkflowTest < ApplicationSystemTestCase
 
     visit project_path(@project)
 
+    # Navigate to edit page where archive action lives
+    click_on "Edit Project"
+    assert_current_path edit_project_path(@project)
+
     # Should see archive option (available for active projects)
     assert_text "Archive Project"
 
