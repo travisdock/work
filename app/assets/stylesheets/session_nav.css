@@ -14,6 +14,27 @@
   justify-content: flex-end;
 }
 
+.session-nav__left {
+  margin-right: auto;
+}
+
+.session-nav__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.session-nav__link {
+  color: var(--accent-color-strong);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.session-nav__link:hover {
+  text-decoration: underline;
+}
+
 .session-nav__user {
   color: #2f3437;
   font-size: 0.95rem;
